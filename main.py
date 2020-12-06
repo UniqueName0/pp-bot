@@ -62,7 +62,7 @@ async def stop(ctx):
   stopped = 1
   
 @bot.command()
-async def balance(ctx):
+async def bal(ctx):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
