@@ -2,10 +2,11 @@ pphelp - shows help
 
 ppflip - flips a coin
 
-pprepeat (amount of times to repeat) (text to repeat) - repeats something a given amount of times
+pprepeat (amount of times to repeat) (text to repeat) - repeats something a given amount of times - can be stopped with ppstop
 
 ppchangerepeatlimit (number) - changes the maximum amount of times that the bot can repeat something, 25 by default
 only usable by owner
 
+ppstop - stops certain commands
 
-the code can be found here, https://repl.it/@UniqueName2/pp-bot
+the code can be found here, https://github.com/name37566/pp-bot
