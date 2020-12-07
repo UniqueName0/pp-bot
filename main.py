@@ -88,9 +88,11 @@ async def upgrade(ctx, arg):
   if arg == "cooldown" and wallet_amt > cd_up_price:
     users[str(user.id)]["cd_up"] += 1
     users[str(user.id)]["wallet"] -= cd_up_price
+    await ctx.send("cooldown upgraded")
   elif arg == "payout" and wallet_amt > payout_up_price:
     users[str(user.id)]["max_up"] += 1
     users[str(user.id)]["wallet"] -= payout_up_price
+    await ctx.send("max payout upgraded")
   else:
     await ctx.send("enter either cooldown or payout after ppupgrade, and that you can afford the upgrade")
   with open("mainbank.json","w") as f:
