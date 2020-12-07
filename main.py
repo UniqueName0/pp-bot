@@ -1,10 +1,10 @@
 import os
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+from discord.ext.tasks import loop
 import random
 import json
 import datetime
-import schedule
 
 token = os.getenv('token')
 
@@ -86,16 +86,16 @@ async def upgrade(ctx, arg):
   wallet_amt = users[str(user.id)]["wallet"]
   hourly_up_price = users[str(user.id)]["hourly"]*3
   payout_up_price = users[str(user.id)]["max_up"]*150
-  if arg == "hourly" and wallet_amt > hourly_up_price:
-    users[str(user.id)]["hourly"] += 50
+  if arg == "daily" and wallet_amt > hourly_up_price:
+    users[str(user.id)]["hourly"] = users[str(user.id)]["hourly"]*2
     users[str(user.id)]["wallet"] -= hourly_up_price
-    await ctx.send("hourly earnings upgraded")
+    await ctx.send("daily earnings upgraded")
   elif arg == "payout" and wallet_amt > payout_up_price:
     users[str(user.id)]["max_up"] += 1
     users[str(user.id)]["wallet"] -= payout_up_price
     await ctx.send("max payout upgraded")
   else:
-    await ctx.send("enter either hourly or payout after ppupgrade, and make sure you can afford the upgrade")
+    await ctx.send("enter either daily or payout after ppupgrade, and make sure you can afford the upgrade")
   with open("mainbank.json","w") as f:
     json.dump(users,f)
 
@@ -104,7 +104,6 @@ async def upgrade(ctx, arg):
 async def work(ctx):
   await open_account(ctx.author)
   
-  global cd
   users = await get_bank_data()
   user = ctx.author
   earnings = random.randrange(0, 100*users[str(user.id)]["max_up"])
@@ -113,25 +112,25 @@ async def work(ctx):
   
   em = discord.Embed(title = f"you got {earnings} pp points", color = discord.Color.red())
   em.add_field(name = f"max payout - upgrade cost: {payout_up_price}",value = users[str(user.id)]["max_up"]*100)
-  em.add_field(name = f"hourly earnings - upgrade cost: {hourly_up_price}",value = users[str(user.id)]["hourly"])
-  em.add_field(name = "upgrading", value = 'use "ppupgrade (payout or hourly)" to upgrade this')
+  em.add_field(name = f"daily - use ppcollect to collect - upgrade cost: {hourly_up_price}",value = users[str(user.id)]["hourly"])
+  em.add_field(name = "upgrading", value = 'use "ppupgrade (payout or daily)" to upgrade this')
   await ctx.send(embed = em)
   
   users[str(user.id)]["wallet"] += earnings
+  with open("mainbank.json","w") as f:
+    json.dump(users,f)
   
-  with open("mainbank.json", "w") as f:
-    json.dump(users, f)
-  
-def hourly_earnings():
-  with open("mainbank.json", "r") as f:
-    users = json.load(f)
-  print("hourly collected")
-  users["wallet"] += users["hourly"]
-  with open("mainbank.json", "w") as f:
-    json.dump(users, f)
-  
-
-schedule.every().hour.do(hourly_earnings)
+@bot.command()
+@commands.cooldown(1,86400, commands.BucketType.user)
+async def collect(ctx):
+  await open_account(ctx.author)
+  user = ctx.author
+  users = await get_bank_data()
+  users[str(user.id)]["wallet"] += users[str(user.id)]["hourly"]
+  z = users[str(user.id)]["hourly"]
+  ctx.send(f"you got {z} pp points")
+  with open("mainbank.json","w") as f:
+    json.dump(users,f)
 
 @work.error
 async def work_error(ctx, error):
