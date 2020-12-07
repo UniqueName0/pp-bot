@@ -74,6 +74,7 @@ async def bal(ctx):
   await ctx.send(embed = em)
   
 @bot.command()
+@commands.cooldown(1, 60, commands.BucketType.user)
 async def work(ctx):
   await open_account(ctx.author)
   
@@ -88,6 +89,13 @@ async def work(ctx):
   with open("mainbank.json", "w") as f:
     json.dump(users, f)
   
+@work.error
+async def work_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        msg = 'This command is on cooldown {:.2f}s'.format(error.retry_after)
+        await ctx.send(msg)
+    else:
+        raise error
   
 async def open_account(user):
   users = await get_bank_data()
