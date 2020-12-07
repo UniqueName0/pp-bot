@@ -4,7 +4,9 @@ from discord.ext import commands
 import random
 import json
 import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
 
+sched = BlockingScheduler()
 token = os.getenv('token')
 
 helptext = open('help.txt', 'r').read()
@@ -82,20 +84,19 @@ async def upgrade(ctx, arg):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
-  global cd
   wallet_amt = users[str(user.id)]["wallet"]
-  cd_up_price = users[str(user.id)]["cd_up"]*150
+  hourly_up_price = users[str(user.id)]["hourly"]*3
   payout_up_price = users[str(user.id)]["max_up"]*150
-  if arg == "cooldown" and wallet_amt > cd_up_price:
-    users[str(user.id)]["cd_up"] += 1
-    users[str(user.id)]["wallet"] -= cd_up_price
-    await ctx.send("cooldown upgraded")
+  if arg == "hourly" and wallet_amt > hourly_up_price:
+    users[str(user.id)]["hourly"] += 50
+    users[str(user.id)]["wallet"] -= hourly_up_price
+    await ctx.send("hourly earnings upgraded")
   elif arg == "payout" and wallet_amt > payout_up_price:
     users[str(user.id)]["max_up"] += 1
     users[str(user.id)]["wallet"] -= payout_up_price
     await ctx.send("max payout upgraded")
   else:
-    await ctx.send("enter either cooldown or payout after pp, and that you can afford the upgrade")
+    await ctx.send("enter either hourly or payout after ppupgrade, and make sure you can afford the upgrade")
   with open("mainbank.json","w") as f:
     json.dump(users,f)
 
@@ -109,9 +110,11 @@ async def work(ctx):
   user = ctx.author
   earnings = random.randrange(0, 100*users[str(user.id)]["max_up"])
   payout_up_price = users[str(user.id)]["max_up"]*150
+  hourly_up_price = users[str(user.id)]["hourly"]*3
   
   em = discord.Embed(title = f"you got {earnings} pp points", color = discord.Color.red())
   em.add_field(name = f"max payout - upgrade cost: {payout_up_price}",value = users[str(user.id)]["max_up"]*100)
+  em.add_field(name = f"hourly earnings - upgrade cost: {hourly_up_price}",value = users[str(user.id)]["hourly"])
   em.add_field(name = "upgrading", value = 'use "ppupgrade payout" to upgrade this')
   await ctx.send(embed = em)
   
@@ -120,6 +123,13 @@ async def work(ctx):
   with open("mainbank.json", "w") as f:
     json.dump(users, f)
   
+@sched.scheduled_job('interval', hours=1)
+def timed_job():
+  with open("mainbank.json", "r") as f:
+    users = json.load(f)
+  users[wallet] += users[hourly]
+  print('hourly earnings collected')
+
 @work.error
 async def work_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
@@ -136,6 +146,7 @@ async def open_account(user):
     users[str(user.id)] = {}
     users[str(user.id)]["wallet"] = 0
     users[str(user.id)]["max_up"] = 1
+    users[str(user.id)]["hourly"] = 0
     
   with open("mainbank.json", "w") as f:
     json.dump(users,f)
@@ -148,6 +159,5 @@ async def get_bank_data():
     
   return users
     
-x = 0
   
 bot.run(token)
