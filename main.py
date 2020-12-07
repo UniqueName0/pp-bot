@@ -128,7 +128,7 @@ async def collect(ctx):
   users = await get_bank_data()
   users[str(user.id)]["wallet"] += users[str(user.id)]["hourly"]
   z = users[str(user.id)]["hourly"]
-  ctx.send(f"you got {z} pp points")
+  await ctx.send(f"you got {z} pp points")
   with open("mainbank.json","w") as f:
     json.dump(users,f)
 
