@@ -115,7 +115,7 @@ async def work(ctx):
   em = discord.Embed(title = f"you got {earnings} pp points", color = discord.Color.red())
   em.add_field(name = f"max payout - upgrade cost: {payout_up_price}",value = users[str(user.id)]["max_up"]*100)
   em.add_field(name = f"hourly earnings - upgrade cost: {hourly_up_price}",value = users[str(user.id)]["hourly"])
-  em.add_field(name = "upgrading", value = 'use "ppupgrade payout" to upgrade this')
+  em.add_field(name = "upgrading", value = 'use "ppupgrade (payout or hourly)" to upgrade this')
   await ctx.send(embed = em)
   
   users[str(user.id)]["wallet"] += earnings
@@ -127,7 +127,7 @@ async def work(ctx):
 def timed_job():
   with open("mainbank.json", "r") as f:
     users = json.load(f)
-  users[wallet] += users[hourly]
+  users["wallet"] += users["hourly"]
   print('hourly earnings collected')
 
 @work.error
