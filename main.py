@@ -4,9 +4,8 @@ from discord.ext import commands
 import random
 import json
 import datetime
-from apscheduler.schedulers.blocking import BlockingScheduler
+import schedule
 
-sched = BlockingScheduler()
 token = os.getenv('token')
 
 helptext = open('help.txt', 'r').read()
@@ -123,12 +122,16 @@ async def work(ctx):
   with open("mainbank.json", "w") as f:
     json.dump(users, f)
   
-@sched.scheduled_job('interval', hours=1)
-def timed_job():
+def hourly_earnings():
   with open("mainbank.json", "r") as f:
     users = json.load(f)
+  print("hourly collected")
   users["wallet"] += users["hourly"]
-  print('hourly earnings collected')
+  with open("mainbank.json", "w") as f:
+    json.dump(users, f)
+  
+
+schedule.every().hour.do(hourly_earnings)
 
 @work.error
 async def work_error(ctx, error):
