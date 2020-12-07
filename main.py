@@ -21,14 +21,15 @@ bot.remove_command('help')
 flip = ['heads' , 'tails']
 repeatlimit = 25
 stopped = 0
-global cd
-cd = 600
+
 
 @bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
+    global users
+    users = get_bank_data()
 
 @bot.command()
 async def help(ctx):
@@ -94,14 +95,12 @@ async def upgrade(ctx, arg):
     users[str(user.id)]["wallet"] -= payout_up_price
     await ctx.send("max payout upgraded")
   else:
-    await ctx.send("enter either cooldown or payout after ppupgrade, and that you can afford the upgrade")
+    await ctx.send("enter either cooldown or payout after pp, and that you can afford the upgrade")
   with open("mainbank.json","w") as f:
     json.dump(users,f)
-  users = await get_bank_data()
-  cd = cd/users[str(user.id)]["cd_up"]
-  
+
 @bot.command()
-@commands.cooldown(1, cd , commands.BucketType.user)
+@commands.cooldown(1 ,120 commands.BucketType.user)
 async def work(ctx):
   await open_account(ctx.author)
   
@@ -110,12 +109,10 @@ async def work(ctx):
   user = ctx.author
   earnings = random.randrange(0, 100*users[str(user.id)]["max_up"])
   payout_up_price = users[str(user.id)]["max_up"]*150
-  cd_up_price = users[str(user.id)]["cd_up"]*150
   
   em = discord.Embed(title = f"you got {earnings} pp points", color = discord.Color.red())
   em.add_field(name = f"max payout - upgrade cost: {payout_up_price}",value = users[str(user.id)]["max_up"]*100)
-  em.add_field(name = f"cooldown - upgrade cost: {cd_up_price}",value = str(datetime.timedelta(seconds=cd)))
-  em.add_field(name = "upgrading", value = 'use "ppupgrade (payout or cooldown)" to upgrade these')
+  em.add_field(name = "upgrading", value = 'use "ppupgrade payout" to upgrade this")
   await ctx.send(embed = em)
   
   users[str(user.id)]["wallet"] += earnings
@@ -138,7 +135,6 @@ async def open_account(user):
   else:
     users[str(user.id)] = {}
     users[str(user.id)]["wallet"] = 0
-    users[str(user.id)]["cd_up"] = 1
     users[str(user.id)]["max_up"] = 1
     
   with open("mainbank.json", "w") as f:

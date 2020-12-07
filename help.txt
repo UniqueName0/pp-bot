@@ -15,6 +15,6 @@ economy stuff
     ppbal - shows balance
     
     ppwork - gives a random amount of pp points, up to 100 pp points
-    ppupgrade (cooldown or payout) - will upgrade cooldown or payout, reducing cooldown on working or increasing max payout of working. each upgrade costs more then the last
+    ppupgrade payout - will upgrade payout, increasing max payout of working. each upgrade costs more then the last
 
 the code can be found here, https://github.com/name37566/pp-bot
