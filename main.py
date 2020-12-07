@@ -100,7 +100,7 @@ async def upgrade(ctx, arg):
     json.dump(users,f)
 
 @bot.command()
-@commands.cooldown(1 ,120 commands.BucketType.user)
+@commands.cooldown(1 ,120, commands.BucketType.user)
 async def work(ctx):
   await open_account(ctx.author)
   
@@ -112,7 +112,7 @@ async def work(ctx):
   
   em = discord.Embed(title = f"you got {earnings} pp points", color = discord.Color.red())
   em.add_field(name = f"max payout - upgrade cost: {payout_up_price}",value = users[str(user.id)]["max_up"]*100)
-  em.add_field(name = "upgrading", value = 'use "ppupgrade payout" to upgrade this")
+  em.add_field(name = "upgrading", value = 'use "ppupgrade payout" to upgrade this')
   await ctx.send(embed = em)
   
   users[str(user.id)]["wallet"] += earnings
