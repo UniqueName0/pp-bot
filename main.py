@@ -148,7 +148,7 @@ async def open_account(user):
     users[str(user.id)] = {}
     users[str(user.id)]["wallet"] = 0
     users[str(user.id)]["max_up"] = 1
-    users[str(user.id)]["hourly"] = 0
+    users[str(user.id)]["hourly"] = 100
     
   with open("mainbank.json", "w") as f:
     json.dump(users,f)
