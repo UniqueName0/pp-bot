@@ -85,9 +85,9 @@ async def upgrade(ctx, arg):
   users = await get_bank_data()
   wallet_amt = users[str(user.id)]["wallet"]
   hourly_up_price = users[str(user.id)]["hourly"]*3
-  payout_up_price = users[str(user.id)]["max_up"]*150
+  payout_up_price = users[str(user.id)]["max_up"]*10
   if arg == "daily" and wallet_amt > hourly_up_price:
-    users[str(user.id)]["hourly"] = users[str(user.id)]["hourly"]*2
+    users[str(user.id)]["hourly"] = users[str(user.id)]["hourly"]*2+100
     users[str(user.id)]["wallet"] -= hourly_up_price
     await ctx.send("daily earnings upgraded")
   elif arg == "payout" and wallet_amt > payout_up_price:
