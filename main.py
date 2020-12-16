@@ -15,6 +15,7 @@ description= 'discord bot'
 intents = discord.Intents.default()
 intents.members = True
 
+global bot
 global pre
 pre = "pp"
 bot = commands.Bot(command_prefix=pre, description=description, intents=intents)
@@ -137,6 +138,7 @@ async def collect(ctx):
 @commands.is_owner()
 async def prefix(ctx, arg):
   global pre
+  global bot
   pre = arg
   bot = commands.Bot(command_prefix=pre, description=description, intents=intents)
     
