@@ -138,6 +138,7 @@ async def collect(ctx):
 async def prefix(ctx, arg):
   global pre
   pre = arg
+  bot = commands.Bot(command_prefix=pre, description=description, intents=intents)
     
 @work.error
 async def work_error(ctx, error):
