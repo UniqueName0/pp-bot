@@ -20,4 +20,4 @@ economy stuff
     
     ppupgrade (payout or daily) - will upgrade work payout or daily earnings, increasing max payout of working and the amount gotten from daily earnings. each upgrade costs more then the last
 
-the code can be found here, https://github.com/name37566/pp-bot
+the code can be found here, https://github.com/UniqueName0/pp-bot
