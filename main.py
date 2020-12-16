@@ -15,14 +15,15 @@ description= 'discord bot'
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix='pp', description=description, intents=intents)
+global pre
+pre = "pp"
+bot = commands.Bot(command_prefix=pre, description=description, intents=intents)
 
 bot.remove_command('help')
 
 flip = ['heads' , 'tails']
 repeatlimit = 25
 stopped = 0
-
 
 @bot.event
 async def on_ready():
@@ -132,6 +133,12 @@ async def collect(ctx):
   with open("mainbank.json","w") as f:
     json.dump(users,f)
 
+@bot.command()
+@commands.is_owner()
+async def prefix(ctx, arg):
+  global pre
+  pre = arg
+    
 @work.error
 async def work_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
