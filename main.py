@@ -42,24 +42,32 @@ async def flip(ctx):
 
 @bot.command()
 async def repeat(ctx, times: int, content='repeating...'):
-    global repeatlimit
+    await open_account(ctx.author)
+    user = ctx.author
+    users = await get_bank_data()
     global stopped
     stopped = 0
-    if times <= int(repeatlimit):
+    re = users[str(ctx.message.guild.id)][repeatlimit]
+    if times <= int(re):
       for i in range(times):
         await ctx.send(content)
         if stopped == 1:
           break
     else:
-      await ctx.send('you cannot repeat over {0} times'.format(repeatlimit))
+      await ctx.send('you cannot repeat over {0} times'.format(re))
       
 @bot.command()
 @commands.is_owner()
 async def changerepeatlimit(ctx,arg):
-  global repeatlimit
-  repeatlimit = arg
-  await ctx.send('the repeat limit is now {0}'.format(repeatlimit))
-  
+  await open_account(ctx.author)
+  user = ctx.author
+  users = await get_bank_data()
+  users[str(ctx.message.guild.id)][repeatlimit] = 25
+  re = users[str(ctx.message.guild.id)][repeatlimit]
+  await ctx.send('the repeat limit is now {0}'.format(re))
+  with open("mainbank.json","w") as f:
+    json.dump(users,f)
+
 @bot.command()
 async def stop(ctx):
   global stopped
