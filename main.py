@@ -66,7 +66,7 @@ async def changerepeatlimit(ctx,arg):
     return False
   else:
     users[str(ctx.message.guild.id)] = {}
-    users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+    users[str(ctx.message.guild.id)]["repeatlimit"] = arg
     with open("mainbank.json","w") as f:
       json.dump(users,f)
   users = await get_bank_data()
