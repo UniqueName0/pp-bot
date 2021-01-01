@@ -47,7 +47,7 @@ async def repeat(ctx, times: int, content='repeating...'):
     global stopped
     global re
     stopped = 0
-    re = users[str(ctx.message.guild.id)][repeatlimit]
+    re = users[str(ctx.message.guild.id)]["repeatlimit"]
     if times <= int(re):
       for i in range(times):
         await ctx.send(content)
@@ -73,7 +73,7 @@ async def changerepeatlimit(ctx,arg):
   users = await get_bank_data()
   users[str(ctx.message.guild.id)]["repeatlimit"] = arg
   users = await get_bank_data()
-  re = users[str(ctx.message.guild.id)][repeatlimit]
+  re = users[str(ctx.message.guild.id)]["repeatlimit"]
   await ctx.send('the repeat limit is now {0}'.format(re))
   with open("mainbank.json","w") as f:
     json.dump(users,f)
