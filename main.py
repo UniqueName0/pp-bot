@@ -60,11 +60,10 @@ async def changerepeatlimit(ctx,arg):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
-  if str(ctx.message.guild.id) in users:
-    return False
-  else:
+  if users[str(ctx.message.guild.id)]["check"] != 1:
     users[str(ctx.message.guild.id)] = {}
     users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+    users[str(ctx.message.guild.id)]["check"] = 1
     with open("mainbank.json","w") as f:
       json.dump(users,f)
   users = await get_bank_data()
