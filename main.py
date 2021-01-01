@@ -45,6 +45,14 @@ async def repeat(ctx, times: int, content='repeating...'):
     users = await get_bank_data()
     global stopped
     stopped = 0
+    users[str(ctx.message.guild.id)] = {}
+    users[str(ctx.message.guild.id)]["check"] = 0
+    if users[str(ctx.message.guild.id)]["check"] != 1:
+      users[str(ctx.message.guild.id)] = {}
+      users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+      users[str(ctx.message.guild.id)]["check"] = 1
+      with open("mainbank.json","w") as f:
+        json.dump(users,f)
     re = users[str(ctx.message.guild.id)]["repeatlimit"]
     if times <= int(re):
       for i in range(times):
