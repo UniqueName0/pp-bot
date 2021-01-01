@@ -21,6 +21,7 @@ bot.remove_command('help')
 
 flip = ['heads' , 'tails']
 stopped = 0
+re = 25
 
 @bot.event
 async def on_ready():
@@ -44,13 +45,6 @@ async def repeat(ctx, times: int, content='repeating...'):
     users = await get_bank_data()
     global stopped
     stopped = 0
-    if str(ctx.message.guild.id) in users:
-      return False
-    else:
-      users[str(ctx.message.guild.id)] = {}
-      users[str(ctx.message.guild.id)]["repeatlimit"] = 25
-      with open("mainbank.json","w") as f:
-        json.dump(users,f)
     re = users[str(ctx.message.guild.id)]["repeatlimit"]
     if times <= int(re):
       for i in range(times):
