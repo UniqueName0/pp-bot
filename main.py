@@ -20,7 +20,8 @@ bot = commands.Bot(command_prefix="pp", description=description, intents=intents
 bot.remove_command('help')
 
 flip = ['heads' , 'tails']
-repeatlimit = 25
+global re
+re = 25
 stopped = 0
 
 @bot.event
@@ -28,8 +29,6 @@ async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
-    global users
-    users = get_bank_data()
 
 @bot.command()
 async def help(ctx):
@@ -46,6 +45,7 @@ async def repeat(ctx, times: int, content='repeating...'):
     user = ctx.author
     users = await get_bank_data()
     global stopped
+    gloval re
     stopped = 0
     re = users[str(ctx.message.guild.id)][repeatlimit]
     if times <= int(re):
@@ -62,6 +62,7 @@ async def changerepeatlimit(ctx,arg):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
+  global re
   if ctx.message.guild.id in users:
     return False
   else:
