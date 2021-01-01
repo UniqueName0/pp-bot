@@ -45,9 +45,9 @@ async def repeat(ctx, times: int, content='repeating...'):
     users = await get_bank_data()
     global stopped
     stopped = 0
-    users[str(ctx.message.guild.id)] = {}
-    users[str(ctx.message.guild.id)]["check"] = 0
-    if users[str(ctx.message.guild.id)]["check"] != 1:
+    if str(ctx.message.guild.id) in users:
+      return False
+    else:
       users[str(ctx.message.guild.id)] = {}
       users[str(ctx.message.guild.id)]["repeatlimit"] = 25
       users[str(ctx.message.guild.id)]["check"] = 1
