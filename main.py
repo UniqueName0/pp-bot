@@ -59,7 +59,7 @@ async def changerepeatlimit(ctx,arg):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
-  if ctx.message.guild.id in users:
+  if str(ctx.message.guild.id) in users:
     return False
   else:
     users[str(ctx.message.guild.id)] = {}
