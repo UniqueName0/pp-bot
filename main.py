@@ -46,7 +46,7 @@ async def repeat(ctx, times: int, content='repeating...'):
     global stopped
     stopped = 0
     if str(ctx.message.guild.id) in users:
-      return False
+      pass
     else:
       users[str(ctx.message.guild.id)] = {}
       users[str(ctx.message.guild.id)]["repeatlimit"] = 25
