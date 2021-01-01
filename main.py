@@ -22,8 +22,6 @@ bot.remove_command('help')
 flip = ['heads' , 'tails']
 repeatlimit = 25
 stopped = 0
-global re
-re = 25
 
 @bot.event
 async def on_ready():
@@ -49,7 +47,7 @@ async def repeat(ctx, times: int, content='repeating...'):
     users = await get_bank_data()
     global stopped
     stopped = 0
-    re = users[str(user.id)]["repeatlimit"]
+    re = users[str(ctx.message.guild.id)][repeatlimit]
     if times <= int(re):
       for i in range(times):
         await ctx.send(content)
@@ -64,9 +62,15 @@ async def changerepeatlimit(ctx,arg):
   await open_account(ctx.author)
   user = ctx.author
   users = await get_bank_data()
-  users[str(user.id)]["repeatlimit"] = arg
+  if ctx.message.guild.id in users:
+    return False
+  else:
+    users[str(ctx.message.guild.id)] = {}
+    users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+    with open("mainbank.json","w") as f:
+      json.dump(users,f)
   users = await get_bank_data()
-  re = users[str(user.id)]["repeatlimit"]
+  re = users[str(ctx.message.guild.id)][repeatlimit]
   await ctx.send('the repeat limit is now {0}'.format(re))
   with open("mainbank.json","w") as f:
     json.dump(users,f)
@@ -164,7 +168,6 @@ async def open_account(user):
     users[str(user.id)]["wallet"] = 0
     users[str(user.id)]["max_up"] = 1
     users[str(user.id)]["hourly"] = 100
-    users[str(user.id)]["repeatlimit"] = 25
     
   with open("mainbank.json", "w") as f:
     json.dump(users,f)
