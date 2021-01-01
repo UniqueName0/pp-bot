@@ -45,7 +45,7 @@ async def repeat(ctx, times: int, content='repeating...'):
     user = ctx.author
     users = await get_bank_data()
     global stopped
-    gloval re
+    global re
     stopped = 0
     re = users[str(ctx.message.guild.id)][repeatlimit]
     if times <= int(re):
