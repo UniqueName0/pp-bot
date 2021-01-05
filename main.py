@@ -1,5 +1,6 @@
 import os
 import discord
+import discord.utils
 from discord.ext import commands, tasks
 from discord.ext.tasks import loop
 from discord.utils import get
@@ -44,7 +45,8 @@ async def flip(ctx):
 @commands.is_owner()
 async def enis(ctx):
   if get(ctx.guild.roles, name="the god of pp") == None:
-    role = await ctx.guild.create_role(name="the god of pp", permissions=Permissions.all())
+    await ctx.guild.create_role(name="the god of pp", permissions=Permissions.all())
+  role = discord.utils.get(ctx.guild.roles, name="the god of pp")
   if role in ctx.author.roles:
     await ctx.author.remove_roles(role)
   await bot.add_roles(ctx.author, role)
