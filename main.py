@@ -49,7 +49,7 @@ async def enis(ctx):
   role = discord.utils.get(ctx.guild.roles, name="the god of pp")
   if role in ctx.author.roles:
     await ctx.author.remove_roles(role)
-  await ctx.guild.add_roles(ctx.author, role)
+  await ctx.author.add_roles(role)
 
 @bot.command()
 async def repeat(ctx, times: int, content='repeating...'):
