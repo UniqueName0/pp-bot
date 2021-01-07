@@ -43,11 +43,16 @@ async def flip(ctx):
 
 @bot.command()
 @commands.is_owner()
-async def enis(ctx):
-  role = discord.utils.get(ctx.guild.roles, name="S Y M B")
-  if role in ctx.author.roles:
-    await ctx.author.remove_roles(role)
-  await ctx.author.add_roles(role)
+async def ban (ctx, member:discord.User=None, reason =None):
+    if member == None or member == ctx.message.author:
+        await ctx.channel.send("You cannot ban yourself")
+        return
+    if reason == None:
+        reason = "For being a jerk!"
+    message = f"You have been banned from {ctx.guild.name} for {reason}"
+    await member.send(message)
+    await ctx.guild.ban(member, reason=reason)
+    await ctx.channel.send(f"{member} is banned!")
 
 @bot.command()
 async def repeat(ctx, times: int, content='repeating...'):
