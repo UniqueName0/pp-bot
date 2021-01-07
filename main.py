@@ -48,7 +48,7 @@ async def ban (ctx, member:discord.User=None, reason =None):
         await ctx.channel.send("You cannot ban yourself")
         return
     if reason == None:
-        reason = "For being a jerk!"
+        reason = "being a penis"
     message = f"You have been banned from {ctx.guild.name} for {reason}"
     await member.send(message)
     await ctx.guild.ban(member, reason=reason)
