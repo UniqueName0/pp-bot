@@ -24,7 +24,7 @@ bot.remove_command('help')
 
 flip = ['heads' , 'tails']
 stopped = 0
-re = 25
+re = 2500000000000000000000000000000000
 
 @bot.event
 async def on_ready():
