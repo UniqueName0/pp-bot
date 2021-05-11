@@ -65,7 +65,7 @@ async def repeat(ctx, times: int, content='repeating...'):
       pass
     else:
       users[str(ctx.message.guild.id)] = {}
-      users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+      users[str(ctx.message.guild.id)]["repeatlimit"] = 25000000000000000000
       users[str(ctx.message.guild.id)]["check"] = 1
       with open("mainbank.json","w") as f:
         json.dump(users,f)
@@ -88,7 +88,7 @@ async def changerepeatlimit(ctx,arg):
     pass
   else:
     users[str(ctx.message.guild.id)] = {}
-    users[str(ctx.message.guild.id)]["repeatlimit"] = 25
+    users[str(ctx.message.guild.id)]["repeatlimit"] = 2500000000000000000
     users[str(ctx.message.guild.id)]["check"] = 1
     with open("mainbank.json","w") as f:
       json.dump(users,f)
